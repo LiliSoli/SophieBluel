@@ -313,3 +313,20 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
+/****Page Log In****/
+h2{
+	text-align: center;
+}
+
+form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 37px 0;
+}
+
+#email, #password{
+	width: 379px;
+	height: 51px;
+}
