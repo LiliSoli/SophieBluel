@@ -143,6 +143,165 @@ body {
 	background-color: #FFFEF8;
 }
 
+/***** CSS pour le mode édition*****/
+.edit-mode-banner {
+	width: 100%;
+	height: 59px;
+	background-color: black;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+.icon-banner {
+	color: white;
+}
+
+.edit-mode-txt {
+	color: white;
+	font-family: Work Sans;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 18.77px;
+}
+
+.modify {
+	position: absolute;
+	top: 10px;
+	right: 360px;
+	display: none;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.fa-regular .fa-pen-to-square {
+	font-size: 16px;
+}
+
+.modify-txt {
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16.42px;
+	text-align: center;
+}
+
+/***CSS pour la fenêtre modale***/
+#modal{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:rgba(0, 0, 0, 0.3);
+	justify-content: center;
+	align-items: center;
+	
+}
+
+.modal{
+	position: fixed;
+	width: 630px;
+	height: 80%;
+	overflow: auto;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.fa-xmark{
+	font-size: 12px;
+	position: absolute;
+	top: -18px;
+	left: 477px;
+}
+
+h3{
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30px;
+	text-align: center;
+}
+
+.line{
+	width: 100%;
+	border: solid 1px #B3B3B3;
+}
+
+.btn-modal{
+	width: 237px;
+	height: 36px;
+	font-family: 'Syne';
+	font-size: 14px;
+	border-radius: 60px;
+	background-color: #1D6154;
+	color: white;
+	padding-block: 0;
+	padding-inline: 0;
+	border-width: 0;
+}
+
+/***modal 1***/
+.modal1{
+	margin: 60px 105px 45px 105px;
+	position: relative;
+	text-align: center;
+	/* box-sizing: content-box; */
+
+}
+
+.modal-gallery{
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	column-gap: 9px;
+	row-gap: 29px;
+	margin: 46px 0 67px 0;
+}
+
+.modal-img{
+	width: 100%;
+}
+
+.delete-inset{
+	width: 17px;
+	height: 17px;
+	border-radius: 2px;
+	background-color: black;
+	position: absolute;
+	top: 6px;
+	right: 5px; 
+}
+
+.fa-trash-can{
+	font-size: 11px;
+	color: white;
+	padding-top: 3px;
+}
+
+.line-modal1{
+	margin-top: 67px;
+	margin-bottom: 38px;
+}
+
+/***modal 2***/
+.modal2{
+	margin: 60px 105px 55px 105px;
+	position: relative;
+	text-align: center;
+}
+
+.line-modal2 {
+	margin-top: 47px;
+	margin-bottom: 32px;
+}
+
+/***Fin CSS modal***/
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -219,34 +378,13 @@ li:hover {
 	margin-bottom: 0.5em;
 }
 
-#projects{
+#projects {
 	position: relative;
 }
 
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
-}
-
-.modify{
-	position: absolute;
-	top: 10px;
-	right: 360px;
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
-}
-
-.fa-regular .fa-pen-to-square {
-	font-size: 16px;
-}
-
-.modify-txt {
-	font-family: Work Sans;
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 16.42px;
-	text-align: center;
 }
 
 #filter {
@@ -286,25 +424,29 @@ li:hover {
 
 }
 
+.modal-figure {
+	position: relative;
+}
+
 #contact,
-#connexion {
+#login {
 	width: 50%;
 	margin: auto;
 }
 
 #contact,
-#connexion>* {
+#login>* {
 	text-align: center;
 
 }
 
 #contact h2,
-#connexion h2 {
+#login h2 {
 	margin-bottom: 20px;
 }
 
 #contact form,
-#connexion form {
+#login form {
 	text-align: left;
 	margin-top: 30px;
 	display: flex;
@@ -312,7 +454,7 @@ li:hover {
 }
 
 #contact input,
-#connexion input {
+#login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
@@ -320,7 +462,7 @@ li:hover {
 }
 
 #contact label,
-#connexion label {
+#login label {
 	margin: 2em 0 1em 0;
 }
 

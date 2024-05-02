@@ -1,29 +1,37 @@
-/*Projets*/
-const works = await fetch("http://localhost:5678/api/works").then((works) =>
+//Récupération des projets
+let works = window.localStorage.getItem("worksGallery");
+if (works === null) {
+ const works = await fetch("http://localhost:5678/api/works").then((works) =>
   works.json()
 );
+window.localStorage.setItem("worksGallery", JSON.stringify(works));
+}
+else {
+  works = JSON.parse(works);
+} 
 
+
+//Affichage des projets
 const galleryElement = document.querySelector(".gallery");
-
-function displayWorks(works) {
-  galleryElement.replaceChildren();
-  for (let work of works) {
+export function displayWorks(worksParam, galleryParam) {
+  galleryParam.replaceChildren();
+  for (let work of worksParam) {
     const imageElement = document.createElement("img");
     imageElement.src = work.imageUrl;
     imageElement.alt = work.title;
-
+    
     const titleElement = document.createElement("figcaption");
     titleElement.innerText = work.title;
-
+    
     const figureElement = document.createElement("figure");
     figureElement.append(imageElement, titleElement);
-    galleryElement.appendChild(figureElement);
+    galleryParam.appendChild(figureElement);
   }
 }
-displayWorks(works);
+displayWorks(works, galleryElement);
 
-/*Filtres*/
 
+//Filtres
 async function displayButtons() {
   const categories = await fetch("http://localhost:5678/api/categories").then(
     (categories) => categories.json()
@@ -31,15 +39,17 @@ async function displayButtons() {
 
   const filterElement = document.getElementById("filter");
 
+
   //Création du bouton "Tous"
   const btnAllElement = document.createElement("button");
   btnAllElement.textContent = "Tous";
 
   btnAllElement.addEventListener("click", () => {
-    displayWorks(works);
+    displayWorks(works, galleryElement);
   });
 
   filterElement.appendChild(btnAllElement);
+
 
   //Création des boutons filtres
   for (let categoryBtn of categories) {
@@ -53,34 +63,23 @@ async function displayButtons() {
       const filteredWorks = works.filter(function (work) {
         return work.category.id == categoryBtn.id;
       });
-      displayWorks(filteredWorks);
+      displayWorks(filteredWorks, galleryElement);
     });
   }
 }
 
-//Création de la div pour modifier
-function displayModify() {
-  const icon = document.createElement("i");
-  icon.classList.add("fa-regular", "fa-pen-to-square");
 
-  const modifyText = document.createElement("p");
-  modifyText.classList.add("modify-txt");
-  modifyText.textContent = "modifier";
-
-  const modifyElement = document.createElement("div");
-  modifyElement.classList.add("modify");
-  modifyElement.append(icon, modifyText);
-
-  const projectsElement = document.getElementById("projects");
-  projectsElement.appendChild(modifyElement);
-}
-
-//Vérification de la connexion de l'utilisateur
+//Affichage selon le statut de l'utilisateur
 const tokenFromStorage = window.localStorage.getItem("token");
-console.log(tokenFromStorage);
 
 if (tokenFromStorage !== null) {
-  displayModify();
+  const editModeElement = document.querySelector(".edit-mode-banner");
+  const modifyElement = document.querySelector(".modify");
+  editModeElement.style.display = "flex";
+  modifyElement.style.display = "flex";
+
+  const headerElement = document.querySelector("header");
+  headerElement.style.margin = "97px 0 92px 0";
 
   const loginElement = document.getElementById("login");
   loginElement.textContent = "logout";
