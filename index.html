@@ -65,21 +65,25 @@
 			<div class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modify">
 				<div class="modal1">
 					<h3>Galerie photo</h3>
-					<i class="fa-solid fa-xmark"></i>
+					<div class="close-modal">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
 					<div class="modal-gallery"></div>
 					<div class="line line-modal1"></div>
-					<button class="btn-modal ">Ajouter une photo</button>
+					<button class="btn-modal btn-open-modal2">Ajouter une photo</button>
 				</div>
 				<div class="modal2">
-					<i></i>
+					<i class="fa-solid fa-arrow-left"></i>
 					<h3>Ajout photo</h3>
-					<i class="fa-solid fa-xmark"></i>
-					<div>
-						<i></i>
+					<div class="close-modal">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<div class="img-content">
+						<i class="fa-regular fa-image"></i>
 						<button type="file" class="btn-picture">+ Ajouter photo</button>
 						<p>jpg, png : 4mo max</p>
 					</div>
-					<form action="">
+					<form action="" class="form-modal2">
 						<label for="">Titre</label>
 						<input type="text">
 						<label for="">Catégorie</label>

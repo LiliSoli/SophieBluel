@@ -49,14 +49,18 @@ function closeModal() {
 
   modalElement.setAttribute("aria-hidden", "true");
   modalElement.setAttribute("aria-modal", "false");
-  console.log(modalElement);
+
+    displayModal1.style.display = "block";
+    displayModal2.style.display = "none";
 }
 
-const closeIcon = document.querySelector(".fa-xmark");
-closeIcon.addEventListener("click", (event) => {
-  event.preventDefault();
-  closeModal();
-});
+const closeIcons = document.querySelectorAll(".close-modal");
+for (let closeIcon of closeIcons){
+  closeIcon.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeModal();
+  });
+}
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" || event.key === "Esc") {
@@ -112,3 +116,19 @@ function displayWorksModal(worksParam, galleryModalParam) {
 }
 displayWorksModal(works, galleryModalElement);
 
+//Affichage modale 1 ou 2
+const btnOpenModal2 = document.querySelector(".btn-open-modal2");
+const displayModal1 = document.querySelector(".modal1");
+const displayModal2 = document.querySelector(".modal2")
+btnOpenModal2.addEventListener("click", (event) => {
+  event.preventDefault();
+  displayModal2.style.display = "block";
+  displayModal1.style.display = "none";
+})
+
+const returnModal1 = document.querySelector(".fa-arrow-left");
+returnModal1.addEventListener("click", (event) => {
+  event.preventDefault();
+  displayModal1.style.display = "block";
+  displayModal2.style.display = "none";
+})
