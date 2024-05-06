@@ -222,6 +222,7 @@ body {
 	position: absolute;
 	top: -34px;
 	right: -75px;
+	cursor: pointer;
 }
 
 .fa-xmark {
@@ -232,7 +233,7 @@ h3 {
 	font-size: 26px;
 	font-weight: 400;
 	line-height: 30px;
-	text-align: center;
+	margin: auto;
 }
 
 .line {
@@ -248,9 +249,11 @@ h3 {
 	border-radius: 60px;
 	background-color: #1D6154;
 	color: white;
+	margin: auto;
 	padding-block: 0;
 	padding-inline: 0;
 	border-width: 0;
+	cursor: pointer;
 }
 
 /***modal 1***/
@@ -258,6 +261,7 @@ h3 {
 	margin: 60px 105px 45px 105px;
 	position: relative;
 	text-align: center;
+	/* overflow: auto; */
 }
 
 .modal-gallery {
@@ -281,6 +285,7 @@ h3 {
 	position: absolute;
 	top: 6px;
 	right: 5px;
+	cursor: pointer;
 }
 
 .fa-trash-can {
@@ -299,6 +304,7 @@ h3 {
 	margin: 60px 105px 55px 105px;
 	position: relative;
 	text-align: center;
+	/* overflow: auto; */
 }
 
 .fa-arrow-left {
@@ -306,11 +312,7 @@ h3 {
 	position: absolute;
 	top: -33px;
 	left: -77px;
-}
-
-.line-modal2 {
-	margin-top: 47px;
-	margin-bottom: 32px;
+	cursor: pointer;
 }
 
 .img-content {
@@ -339,9 +341,26 @@ h3 {
 	line-height: 16px;
 	padding: 10px 33px;
 	margin: 13px 0 7px 0;
+	z-index: 0;
+	cursor: pointer;
+	position: relative;
 }
 
-.img-content p {
+#picture-file {
+	width: 0.1px;
+	height: 0.1px;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+#image-preview {
+	display: none;
+	max-height: 169px;
+}
+
+.img-content-txt {
 	font-family: 'Work Sans';
 	font-size: 10px;
 	font-weight: 400;
@@ -352,6 +371,25 @@ h3 {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
+	/* align-items: center; */
+}
+
+#form-title, #form-category{
+	width: 100%;
+	height: 51px;
+	margin-top: 10px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#form-title{
+	margin-bottom: 21px;
+}  
+
+.line-modal2 {
+	margin-top: 47px;
+	margin-bottom: 32px;
 }
 
 /***Fin CSS modal***/

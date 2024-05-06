@@ -73,6 +73,7 @@
 					<button class="btn-modal btn-open-modal2">Ajouter une photo</button>
 				</div>
 				<div class="modal2">
+					<form action="" class="form-modal2">
 					<i class="fa-solid fa-arrow-left"></i>
 					<h3>Ajout photo</h3>
 					<div class="close-modal">
@@ -80,16 +81,24 @@
 					</div>
 					<div class="img-content">
 						<i class="fa-regular fa-image"></i>
-						<button type="file" class="btn-picture">+ Ajouter photo</button>
-						<p>jpg, png : 4mo max</p>
+						<label for="picture-file" class="btn-picture">
+								+ Ajouter photo
+						</label>
+						<input type="file" name="file" id="picture-file" accept="image/jpeg, image/png">
+						<img id="image-preview" src="" alt="Prévisualisation image">
+						<p class="img-content-txt">jpg, png : 4mo max</p>
 					</div>
-					<form action="" class="form-modal2">
-						<label for="">Titre</label>
-						<input type="text">
-						<label for="">Catégorie</label>
-						<input type="text">
+						<label for="form-title">Titre</label>
+						<input type="text" name="title" id="form-title" required>
+						<label for="form-category">Catégorie</label>
+						<select name="category" id="form-category" required>
+							<option value=""></option>
+							<!-- <option value="Objets">Objets</option>
+							<option value="Appartements">Appartements</option>
+							<option value="Hôtels & restaurants">Hôtels & restaurants</option> -->
+						</select>
 						<div class="line line-modal2"></div>
-						<button type="submit" class="btn-modal">Valider</button>
+						<button type="submit" class="btn-modal btn-picture-submit">Valider</button>
 					</form>
 				</div>
 			</div>

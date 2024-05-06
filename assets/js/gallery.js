@@ -1,15 +1,14 @@
 //Récupération des projets
+// window.localStorage.removeItem("worksGallery");
 let works = window.localStorage.getItem("worksGallery");
 if (works === null) {
- const works = await fetch("http://localhost:5678/api/works").then((works) =>
-  works.json()
+  const works = await fetch("http://localhost:5678/api/works").then((works) =>
+    works.json()
 );
 window.localStorage.setItem("worksGallery", JSON.stringify(works));
-}
-else {
+} else {
   works = JSON.parse(works);
-} 
-
+}
 
 //Affichage des projets
 const galleryElement = document.querySelector(".gallery");
@@ -19,10 +18,10 @@ export function displayWorks(worksParam, galleryParam) {
     const imageElement = document.createElement("img");
     imageElement.src = work.imageUrl;
     imageElement.alt = work.title;
-    
+
     const titleElement = document.createElement("figcaption");
     titleElement.innerText = work.title;
-    
+
     const figureElement = document.createElement("figure");
     figureElement.append(imageElement, titleElement);
     galleryParam.appendChild(figureElement);
@@ -30,15 +29,14 @@ export function displayWorks(worksParam, galleryParam) {
 }
 displayWorks(works, galleryElement);
 
-
 //Filtres
 async function displayButtons() {
   const categories = await fetch("http://localhost:5678/api/categories").then(
     (categories) => categories.json()
   );
+  window.localStorage.setItem("categories", JSON.stringify(categories));
 
   const filterElement = document.getElementById("filter");
-
 
   //Création du bouton "Tous"
   const btnAllElement = document.createElement("button");
@@ -49,7 +47,6 @@ async function displayButtons() {
   });
 
   filterElement.appendChild(btnAllElement);
-
 
   //Création des boutons filtres
   for (let categoryBtn of categories) {
@@ -67,7 +64,6 @@ async function displayButtons() {
     });
   }
 }
-
 
 //Affichage selon le statut de l'utilisateur
 const tokenFromStorage = window.localStorage.getItem("token");

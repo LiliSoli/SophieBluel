@@ -20,28 +20,6 @@ modifyDiv.addEventListener("click", (event) => {
   openModal();
 });
 
-//Conserver le focus sur la modale
-const focusable = "button, a, input, textarea";
-let focusablesElements = Array.from(displayModal.querySelectorAll(focusable));
-
-function focusInModal(event) {
-  event.preventDefault();
-  const focusedElement = displayModal.querySelector(":focus");
-  console.log(focusedElement);
-  let index = focusablesElements.findIndex((f) => f === focusedElement);
-  console.log(index);
-  index++;
-  if (index >= focusablesElements.length) {
-    index = 0;
-  }
-  focusablesElements[index].focus();
-}
-
-window.addEventListener("keydown", (event) => {
-  if (event.key === "Tab" && displayModal !== null) {
-    focusInModal(event);
-  }
-});
 
 //Fermeture fenêtre modale
 function closeModal() {
@@ -50,12 +28,12 @@ function closeModal() {
   modalElement.setAttribute("aria-hidden", "true");
   modalElement.setAttribute("aria-modal", "false");
 
-    displayModal1.style.display = "block";
-    displayModal2.style.display = "none";
+  displayModal1.style.display = "block";
+  displayModal2.style.display = "none";
 }
 
 const closeIcons = document.querySelectorAll(".close-modal");
-for (let closeIcon of closeIcons){
+for (let closeIcon of closeIcons) {
   closeIcon.addEventListener("click", (event) => {
     event.preventDefault();
     closeModal();
@@ -71,6 +49,7 @@ window.addEventListener("keydown", (event) => {
 //Affichage des projets dans la modale
 let works = JSON.parse(window.localStorage.getItem("worksGallery"));
 const galleryModalElement = document.querySelector(".modal-gallery");
+const tokenFromStorage = window.localStorage.getItem("token");
 
 function displayWorksModal(worksParam, galleryModalParam) {
   for (let work of worksParam) {
@@ -94,24 +73,24 @@ function displayWorksModal(worksParam, galleryModalParam) {
     galleryModalParam.appendChild(figureElement);
 
     //Suppression des projets
-    const tokenFromStorage = window.localStorage.getItem("token");
     deleteInset.addEventListener("click", async (event) => {
-        event.preventDefault();
-        fetch("http://localhost:5678/api/works/"+work.id, {
-          method: "DELETE",
-          headers: {Authorization: `Bearer ${tokenFromStorage}`}
-        });
+      event.preventDefault();
+      fetch("http://localhost:5678/api/works/" + work.id, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${tokenFromStorage}` },
+      });
 
-        //Mise à jour de la modale et de l'affichage des projets
-        galleryModalParam.removeChild(figureElement);
-        const galleryElement = document.querySelector(".gallery");
-        
-        works = await fetch("http://localhost:5678/api/works").then((works) => works.json());
-        window.localStorage.setItem("worksGallery", JSON.stringify(works));
-  
-        displayWorks(works, galleryElement);
+      //Mise à jour de la modale et de l'affichage des projets
+      galleryModalParam.removeChild(figureElement);
+      const galleryElement = document.querySelector(".gallery");
+
+      works = await fetch("http://localhost:5678/api/works").then((works) =>
+        works.json()
+      );
+      window.localStorage.setItem("worksGallery", JSON.stringify(works));
+
+      displayWorks(works, galleryElement);
     });
-
   }
 }
 displayWorksModal(works, galleryModalElement);
@@ -119,16 +98,99 @@ displayWorksModal(works, galleryModalElement);
 //Affichage modale 1 ou 2
 const btnOpenModal2 = document.querySelector(".btn-open-modal2");
 const displayModal1 = document.querySelector(".modal1");
-const displayModal2 = document.querySelector(".modal2")
+const displayModal2 = document.querySelector(".modal2");
 btnOpenModal2.addEventListener("click", (event) => {
   event.preventDefault();
   displayModal2.style.display = "block";
   displayModal1.style.display = "none";
-})
+});
 
 const returnModal1 = document.querySelector(".fa-arrow-left");
 returnModal1.addEventListener("click", (event) => {
   event.preventDefault();
   displayModal1.style.display = "block";
   displayModal2.style.display = "none";
+});
+
+//Affichage de la photo choisie
+const fileInput = document.getElementById("picture-file");
+const imagePreview = document.getElementById("image-preview");
+
+fileInput.addEventListener("change", (event) => {
+  event.preventDefault();
+  const pictureFile = event.target.files[0];
+  imagePreview.src = URL.createObjectURL(pictureFile);
+  imagePreview.style.display = "block";
+
+  const imageContentContainer = document.querySelector(".img-content");
+  const imageContentIcon = document.querySelector(".fa-image");
+  const imageContentButton = document.querySelector(".btn-picture");
+  const imageContentText = document.querySelector(".img-content-txt");
+
+  imageContentContainer.style.padding = "0"; 
+  imageContentIcon.style.display = "none";
+  imageContentButton.style.display = "none";
+  imageContentText.style.display = "none";
 })
+
+
+//Catégorie dans le formulaire modale 2
+  const formCategory = document.getElementById("form-category");
+  const categoriesFromStorage = JSON.parse(window.localStorage.getItem("categories"));
+
+  for (let category of categoriesFromStorage) {
+    const optionCategoryElement = document.createElement("option");
+    optionCategoryElement.value = category.id;
+    optionCategoryElement.textContent = category.name;
+
+    formCategory.appendChild(optionCategoryElement);
+  }
+
+
+//Ajouter une photo dans la modale 2
+const submitNewPicture = document.querySelector(".btn-picture-submit");
+submitNewPicture.addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const pictureFile = fileInput.files[0];
+
+  const formData = new FormData();
+  const formTitle = document.getElementById("form-title").value;
+  const formCategory = document.getElementById("form-category").value;
+  console.log(formTitle)
+  console.log(formCategory)
+  
+  try {
+    formData.append("title", formTitle);
+    formData.append("category", formCategory);
+    formData.append("image", pictureFile);
+
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${tokenFromStorage}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("Erreur lors de l'ajout de la photo");
+    }
+
+    //Mise à jour de la modale et de l'affichage des projets
+    // galleryModalParam.appendChild(figureElement);
+    const galleryElement = document.querySelector(".gallery");
+
+    works = await fetch("http://localhost:5678/api/works").then((works) =>
+      works.json()
+    );
+    window.localStorage.setItem("worksGallery", JSON.stringify(works));
+
+    displayWorks(works, galleryElement);
+  } catch (error) {
+    console.error("Erreur lors de la requête fetch :", error.message);
+  }
+});
+
+console.log(works);
