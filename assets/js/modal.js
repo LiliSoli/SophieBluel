@@ -2,6 +2,10 @@
 
 import { displayWorks } from "./gallery.js";
 
+const fileInput = document.getElementById("picture-file");
+const formTitleElement = document.getElementById("form-title");
+const formCategoryElement = document.getElementById("form-category");
+
 // Affichage fenêtre modale
 const displayModal = document.getElementById("modal");
 const modalElement = document.querySelector(".modal");
@@ -11,7 +15,8 @@ function openModal() {
 
   modalElement.removeAttribute("aria-hidden");
   modalElement.setAttribute("aria-modal", "true");
-  console.log(modalElement);
+
+  document.body.classList.add("body-overflow-hidden");
 }
 
 const modifyDiv = document.getElementById("modify");
@@ -19,7 +24,6 @@ modifyDiv.addEventListener("click", (event) => {
   event.preventDefault();
   openModal();
 });
-
 
 //Fermeture fenêtre modale
 function closeModal() {
@@ -30,6 +34,25 @@ function closeModal() {
 
   displayModal1.style.display = "block";
   displayModal2.style.display = "none";
+
+  document.body.classList.remove("body-overflow-hidden");
+
+  const imageContentContainer = document.querySelector(".img-content");
+  const imageContentIcon = document.querySelector(".fa-image");
+  const imageContentButton = document.querySelector(".btn-picture");
+  const imageContentText = document.querySelector(".img-content-txt");
+
+  //Réinitialisation du formulaire de la modale
+  imagePreview.src = "";
+  imagePreview.style.display = "none";
+  imageContentContainer.style.padding = "22px 0 19px 0";
+  imageContentContainer.style.display = "flex";
+  imageContentIcon.style.display = "flex";
+  imageContentButton.style.display = "flex";
+  imageContentText.style.display = "inline-block";
+  document.getElementById("form-title").value = "";
+  document.getElementById("form-category").value = "";
+  submitNewPicture.classList.remove("btn-picture-submit-valid");
 }
 
 const closeIcons = document.querySelectorAll(".close-modal");
@@ -39,6 +62,12 @@ for (let closeIcon of closeIcons) {
     closeModal();
   });
 }
+
+window.addEventListener("click", (event) => {
+  if (event.target === displayModal) {
+    closeModal();
+  }
+});
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" || event.key === "Esc") {
@@ -112,13 +141,19 @@ returnModal1.addEventListener("click", (event) => {
   displayModal2.style.display = "none";
 });
 
+//Formulaire modale 2
 //Affichage de la photo choisie
-const fileInput = document.getElementById("picture-file");
 const imagePreview = document.getElementById("image-preview");
 
 fileInput.addEventListener("change", (event) => {
   event.preventDefault();
   const pictureFile = event.target.files[0];
+
+  if (!pictureFile.type.includes("image/jpeg") && !pictureFile.type.includes("image/png")) {
+    alert("Veuillez sélectionner une image au format JPEG ou PNG.");
+    return;
+  }
+
   imagePreview.src = URL.createObjectURL(pictureFile);
   imagePreview.style.display = "block";
 
@@ -127,39 +162,67 @@ fileInput.addEventListener("change", (event) => {
   const imageContentButton = document.querySelector(".btn-picture");
   const imageContentText = document.querySelector(".img-content-txt");
 
-  imageContentContainer.style.padding = "0"; 
+  imageContentContainer.style.padding = "0";
   imageContentIcon.style.display = "none";
   imageContentButton.style.display = "none";
   imageContentText.style.display = "none";
-})
+
+  displayGreenSubmitButton();
+});
+
+
+//Titre dans le formulaire modale 2
+formTitleElement.addEventListener("change", (event) => {
+  event.preventDefault();
+  displayGreenSubmitButton();
+});
 
 
 //Catégorie dans le formulaire modale 2
-  const formCategory = document.getElementById("form-category");
-  const categoriesFromStorage = JSON.parse(window.localStorage.getItem("categories"));
+const categoriesFromStorage = JSON.parse(
+  window.localStorage.getItem("categories")
+);
 
-  for (let category of categoriesFromStorage) {
-    const optionCategoryElement = document.createElement("option");
-    optionCategoryElement.value = category.id;
-    optionCategoryElement.textContent = category.name;
+for (let category of categoriesFromStorage) {
+  const optionCategoryElement = document.createElement("option");
+  optionCategoryElement.value = category.id;
+  optionCategoryElement.textContent = category.name;
 
-    formCategory.appendChild(optionCategoryElement);
-  }
+  formCategoryElement.appendChild(optionCategoryElement);
+}
+
+formCategoryElement.addEventListener("change", (event) => {
+  event.preventDefault();
+  displayGreenSubmitButton();
+});
 
 
 //Ajouter une photo dans la modale 2
 const submitNewPicture = document.querySelector(".btn-picture-submit");
+
 submitNewPicture.addEventListener("click", async (event) => {
   event.preventDefault();
 
   const pictureFile = fileInput.files[0];
+  const formTitle = formTitleElement.value;
+  const formCategory = formCategoryElement.value;
+
+  if (pictureFile === undefined) {
+    alert("Veuillez sélectionner une image.");
+    return;
+  };
+
+  if (!formTitle) {
+    alert("Veuillez saisir un titre.");
+    return;
+  };
+
+  if (!formCategory) {
+    alert("Veuillez choisir une catégorie.");
+    return;
+  };
 
   const formData = new FormData();
-  const formTitle = document.getElementById("form-title").value;
-  const formCategory = document.getElementById("form-category").value;
-  console.log(formTitle)
-  console.log(formCategory)
-  
   try {
     formData.append("title", formTitle);
     formData.append("category", formCategory);
@@ -188,9 +251,27 @@ submitNewPicture.addEventListener("click", async (event) => {
     window.localStorage.setItem("worksGallery", JSON.stringify(works));
 
     displayWorks(works, galleryElement);
+    // displayWorksModal(works, galleryModalElement);
+
   } catch (error) {
     console.error("Erreur lors de la requête fetch :", error.message);
   }
 });
 
-console.log(works);
+
+//Fonction pour afficher le bouton vert si le questionnaire est rempli
+function displayGreenSubmitButton() {
+  console.log(formTitleElement.value);
+  console.log(formCategoryElement.value);
+  
+  const pictureFileSelected = fileInput.files[0];
+  if (pictureFileSelected !== undefined &&
+    formTitleElement.value !== "" &&
+    formCategoryElement.value !== "") {
+      
+    submitNewPicture.classList.add("btn-picture-submit-valid");
+    }
+  else {
+    submitNewPicture.classList.remove("btn-picture-submit-valid");
+  }
+}

@@ -143,6 +143,10 @@ body {
 	background-color: #FFFEF8;
 }
 
+.body-overflow-hidden {
+	overflow-y : hidden;
+}
+
 /***** CSS pour le mode édition*****/
 .edit-mode-banner {
 	width: 100%;
@@ -390,6 +394,14 @@ h3 {
 .line-modal2 {
 	margin-top: 47px;
 	margin-bottom: 32px;
+}
+
+.btn-picture-submit {
+	background-color: #A7A7A7;
+}
+
+.btn-picture-submit-valid {
+	background-color: #1D6154;
 }
 
 /***Fin CSS modal***/
