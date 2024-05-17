@@ -20,15 +20,23 @@
 		<p class="edit-mode-txt">Mode édition</p>
 	</div>
 	<header id="header">
-		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<h1>Sophie Bluel <span>ARCHITECTE D'INTÉRIEUR</span></h1>
 		<nav>
 			<ul>
-				<li>projets</li>
-				<li>contact</li>
+				<li>
+					<a href="#projects">projets</a>
+				</li>
+				<li>
+					<a href="#contact">contact</a>
+				</li>
 				<li>
 					<a href="login.html" id="login">login</a>
 				</li>
-				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				<li>
+					<a href="">
+						<img src="./assets/icons/instagram.png" alt="Instagram" class="insta">
+					</a>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -53,7 +61,7 @@
 				<h2>Mes Projets</h2>
 				<a href="modal" id="modify" class="modify">
 					<i class="fa-regular fa-pen-to-square"></i>
-					<p class="modigy-txt">modifier</p>
+					<p class="modify-txt">modifier</p>
 				</a>
 			</div>
 			<div id="filter">
@@ -83,19 +91,17 @@
 						<label for="picture-file" class="btn-picture">
 							+ Ajouter photo
 						</label>
-						<input type="file" name="file" id="picture-file" accept="image/jpeg, image/png">
-						<img id="image-preview" src="" alt="Prévisualisation image">
+						<img id="image-preview" src="#" alt="Prévisualisation image">
 						<p class="img-content-txt">jpg, png : 4mo max</p>
 					</div>
-					<form action="" class="form-modal2">
+					<form action="#" id="form-modal2">
+						<input type="file" name="file" id="picture-file" accept="image/jpeg, image/png">
 						<label for="form-title">Titre</label>
 						<input type="text" name="title" id="form-title" required>
 						<label for="form-category">Catégorie</label>
 						<select name="category" id="form-category" required>
-							<option value=""></option>
-							<!-- <option value="Objets">Objets</option>
-							<option value="Appartements">Appartements</option>
-							<option value="Hôtels & restaurants">Hôtels & restaurants</option> -->
+							<option value="" label=" "> 
+							</option>
 						</select>
 						<div class="line line-modal2"></div>
 						<button type="submit" class="btn-modal btn-picture-submit">Valider</button>

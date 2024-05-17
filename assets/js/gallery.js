@@ -1,11 +1,10 @@
 //Récupération des projets
-// window.localStorage.removeItem("worksGallery");
 let works = window.localStorage.getItem("worksGallery");
 if (works === null) {
   const works = await fetch("http://localhost:5678/api/works").then((works) =>
     works.json()
-);
-window.localStorage.setItem("worksGallery", JSON.stringify(works));
+  );
+  window.localStorage.setItem("worksGallery", JSON.stringify(works));
 } else {
   works = JSON.parse(works);
 }

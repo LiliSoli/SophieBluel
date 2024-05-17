@@ -19,13 +19,12 @@ form.addEventListener("submit", (event) => {
     .then((response) => {
       if (!response.ok) {
         alert("Email ou mot de passe incorrect");
-        return
+        return;
       }
       return response.json();
     })
 
     .then((user) => {
-
       const tokenValue = user.token;
       window.localStorage.setItem("token", tokenValue);
 

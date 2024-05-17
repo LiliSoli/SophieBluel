@@ -9,12 +9,16 @@ const formCategoryElement = document.getElementById("form-category");
 // Affichage fenêtre modale
 const displayModal = document.getElementById("modal");
 const modalElement = document.querySelector(".modal");
+const galleryModalElement = document.querySelector(".modal-gallery");
 
 function openModal() {
   displayModal.style.display = "flex";
 
   modalElement.removeAttribute("aria-hidden");
   modalElement.setAttribute("aria-modal", "true");
+
+  galleryModalElement.replaceChildren();
+  displayWorksModal(works, galleryModalElement);
 
   document.body.classList.add("body-overflow-hidden");
 }
@@ -36,23 +40,27 @@ function closeModal() {
   displayModal2.style.display = "none";
 
   document.body.classList.remove("body-overflow-hidden");
+  resetFormModal2();
+}
 
+//Réinitialisation du formulaire de la modale
+function resetFormModal2() {
   const imageContentContainer = document.querySelector(".img-content");
   const imageContentIcon = document.querySelector(".fa-image");
   const imageContentButton = document.querySelector(".btn-picture");
   const imageContentText = document.querySelector(".img-content-txt");
+  const form = document.getElementById("form-modal2");
 
-  //Réinitialisation du formulaire de la modale
+  form.reset();
+
   imagePreview.src = "";
-  imagePreview.style.display = "none";
+  fileInput.value = "";
   imageContentContainer.style.padding = "22px 0 19px 0";
   imageContentContainer.style.display = "flex";
+  imagePreview.style.display = "none";
   imageContentIcon.style.display = "flex";
   imageContentButton.style.display = "flex";
   imageContentText.style.display = "inline-block";
-  document.getElementById("form-title").value = "";
-  document.getElementById("form-category").value = "";
-  submitNewPicture.classList.remove("btn-picture-submit-valid");
 }
 
 const closeIcons = document.querySelectorAll(".close-modal");
@@ -71,13 +79,13 @@ window.addEventListener("click", (event) => {
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" || event.key === "Esc") {
-    closeModal(event);
+    closeModal();
   }
 });
 
 //Affichage des projets dans la modale
 let works = JSON.parse(window.localStorage.getItem("worksGallery"));
-const galleryModalElement = document.querySelector(".modal-gallery");
+
 const tokenFromStorage = window.localStorage.getItem("token");
 
 function displayWorksModal(worksParam, galleryModalParam) {
@@ -122,7 +130,6 @@ function displayWorksModal(worksParam, galleryModalParam) {
     });
   }
 }
-displayWorksModal(works, galleryModalElement);
 
 //Affichage modale 1 ou 2
 const btnOpenModal2 = document.querySelector(".btn-open-modal2");
@@ -130,6 +137,7 @@ const displayModal1 = document.querySelector(".modal1");
 const displayModal2 = document.querySelector(".modal2");
 btnOpenModal2.addEventListener("click", (event) => {
   event.preventDefault();
+
   displayModal2.style.display = "block";
   displayModal1.style.display = "none";
 });
@@ -139,6 +147,8 @@ returnModal1.addEventListener("click", (event) => {
   event.preventDefault();
   displayModal1.style.display = "block";
   displayModal2.style.display = "none";
+
+  resetFormModal2();
 });
 
 //Formulaire modale 2
@@ -149,7 +159,10 @@ fileInput.addEventListener("change", (event) => {
   event.preventDefault();
   const pictureFile = event.target.files[0];
 
-  if (!pictureFile.type.includes("image/jpeg") && !pictureFile.type.includes("image/png")) {
+  if (
+    !pictureFile.type.includes("image/jpeg") &&
+    !pictureFile.type.includes("image/png")
+  ) {
     alert("Veuillez sélectionner une image au format JPEG ou PNG.");
     return;
   }
@@ -170,13 +183,11 @@ fileInput.addEventListener("change", (event) => {
   displayGreenSubmitButton();
 });
 
-
 //Titre dans le formulaire modale 2
 formTitleElement.addEventListener("change", (event) => {
   event.preventDefault();
   displayGreenSubmitButton();
 });
-
 
 //Catégorie dans le formulaire modale 2
 const categoriesFromStorage = JSON.parse(
@@ -196,7 +207,6 @@ formCategoryElement.addEventListener("change", (event) => {
   displayGreenSubmitButton();
 });
 
-
 //Ajouter une photo dans la modale 2
 const submitNewPicture = document.querySelector(".btn-picture-submit");
 
@@ -210,17 +220,17 @@ submitNewPicture.addEventListener("click", async (event) => {
   if (pictureFile === undefined) {
     alert("Veuillez sélectionner une image.");
     return;
-  };
+  }
 
   if (!formTitle) {
     alert("Veuillez saisir un titre.");
     return;
-  };
+  }
 
   if (!formCategory) {
     alert("Veuillez choisir une catégorie.");
     return;
-  };
+  }
 
   const formData = new FormData();
   try {
@@ -237,7 +247,6 @@ submitNewPicture.addEventListener("click", async (event) => {
     });
 
     if (!response.ok) {
-      console.log(response);
       throw new Error("Erreur lors de l'ajout de la photo");
     }
 
@@ -251,27 +260,22 @@ submitNewPicture.addEventListener("click", async (event) => {
     window.localStorage.setItem("worksGallery", JSON.stringify(works));
 
     displayWorks(works, galleryElement);
-    // displayWorksModal(works, galleryModalElement);
-
+    closeModal();
   } catch (error) {
     console.error("Erreur lors de la requête fetch :", error.message);
   }
 });
 
-
 //Fonction pour afficher le bouton vert si le questionnaire est rempli
 function displayGreenSubmitButton() {
-  console.log(formTitleElement.value);
-  console.log(formCategoryElement.value);
-  
   const pictureFileSelected = fileInput.files[0];
-  if (pictureFileSelected !== undefined &&
+  if (
+    pictureFileSelected !== undefined &&
     formTitleElement.value !== "" &&
-    formCategoryElement.value !== "") {
-      
+    formCategoryElement.value !== ""
+  ) {
     submitNewPicture.classList.add("btn-picture-submit-valid");
-    }
-  else {
+  } else {
     submitNewPicture.classList.remove("btn-picture-submit-valid");
   }
 }
